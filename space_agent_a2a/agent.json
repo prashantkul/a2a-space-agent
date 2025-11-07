@@ -1,0 +1,35 @@
+{
+  "capabilities": {},
+  "defaultInputModes": ["text/plain"],
+  "defaultOutputModes": ["application/json"],
+  "description": "An AI agent that explores space data using The Space Devs GraphQL API through an authenticated MCP server. Provides information about rocket launches, astronauts, space missions, and celestial bodies.",
+  "name": "space_explorer",
+  "skills": [
+    {
+      "id": "space_launches",
+      "name": "Space Launch Information",
+      "description": "Search and retrieve information about upcoming and past rocket launches",
+      "tags": ["space", "launches", "rockets", "missions"]
+    },
+    {
+      "id": "astronaut_info",
+      "name": "Astronaut Information",
+      "description": "Get details about astronauts and find out who is currently in space",
+      "tags": ["astronauts", "space", "crew", "people"]
+    },
+    {
+      "id": "celestial_bodies",
+      "name": "Celestial Body Information",
+      "description": "Explore information about celestial bodies and space objects",
+      "tags": ["celestial", "planets", "space", "astronomy"]
+    },
+    {
+      "id": "space_missions",
+      "name": "Space Mission Details",
+      "description": "Get comprehensive information about space missions and exploration programs",
+      "tags": ["missions", "space", "exploration", "programs"]
+    }
+  ],
+  "url": "http://localhost:8000/a2a/space_explorer",
+  "version": "1.0.0"
+}

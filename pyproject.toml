@@ -1,0 +1,39 @@
+[project]
+name = "space-agent-a2a"
+version = "1.0.0"
+description = "A2A-enabled Google ADK agent for exploring space data via The Space Devs API"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+authors = [
+    {name = "Your Name", email = "your.email@example.com"}
+]
+
+dependencies = [
+    "google-adk[a2a]>=0.1.0",
+    "google-auth>=2.0.0",
+    "python-dotenv>=1.0.0",
+    "fastapi>=0.115.0",
+    "uvicorn>=0.34.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.0",
+    "pytest-asyncio>=0.25.0",
+    "pyink>=24.10.0",
+]
+
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["space_agent_a2a*"]
+
+[tool.pyink]
+line-length = 80
+unstable = true
+pyink-indentation = 2
+pyink-use-majority-quotes = true
