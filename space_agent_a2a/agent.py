@@ -56,31 +56,6 @@ SCOPES = ["read:users", "openid", "profile", "email", "offline_access"]
 CREDENTIAL_CACHE_KEY = "auth0_mcp_credential"
 
 
-# Temporarily commented out due to MCP dependencies
-# def _get_credentials_or_auth_request(
-#     tool_context: ToolContext,
-# ) -> Union[AuthCredential, AuthConfig]:
-#     """Get user credentials or return auth request.
-
-#     This function follows the ADK sample pattern from:
-#     https://github.com/VeerMuchandi/Learn_ADK_Agents/blob/main/route_planner_agent/route_planner.py
-#     """
-#     return get_user_credentials(
-#         tool_context=tool_context,
-#         client_id=CLIENT_ID,
-#         client_secret=CLIENT_SECRET,
-#         redirect_uri=REDIRECT_URI,
-#         scopes=SCOPES,
-#         credential_cache_key=CREDENTIAL_CACHE_KEY,
-#         auth0_domain=AUTH0_DOMAIN,
-#         api_audience=API_AUDIENCE,
-#     )
-
-
-# No longer needed! MCP server now allows anonymous discovery.
-# User tokens from auth_scheme will reach the server during tool execution.
-
-
 # Configure OAuth2 auth scheme for Auth0 with authorization code flow
 auth_scheme = ExtendedOAuth2(
     flows=OAuthFlows(
@@ -114,17 +89,20 @@ auth_credential = AuthCredential(
 # 2. Tool execution (tools/call) - requires user OAuth token from auth_scheme
 # 3. MCP server validates user token and can enforce per-user permissions
 
+
 def get_mcp_toolset():
-    """Create and return the MCP toolset wrapper for A2A compatibility."""
-    # Return the wrapper itself, not the actual toolset
-    # This prevents MCP's ClientSession from being exposed to Pydantic serialization
-    return McpToolsetWrapper(
-        connection_url="http://34.61.171.198:8000/mcp",
+    """Create and return the MCP toolset on demand."""
+    return McpToolset(
+        connection_params=StreamableHTTPConnectionParams(
+            url="http://34.61.171.198:8000/mcp",
+            timeout=30.0,  # Increased timeout for better stability
+        ),
         auth_scheme=auth_scheme,
         auth_credential=auth_credential,
-        timeout=30.0,
         tool_name_prefix="space",
+        errlog=None,  # Avoid pickle errors during Agent Engine deployment
     )
+
 
 # Define the root agent
 # This agent is A2A-compatible and can:
@@ -161,7 +139,7 @@ Available tools allow you to:
 """,
     description="An AI agent that explores space data using The Space Devs GraphQL API through an authenticated MCP server",
     tools=[
-        # get_mcp_toolset(),  # Temporarily disabled for A2A testing
-        save_conversation
+        get_mcp_toolset(),  
+        save_conversation,
     ],
 )
